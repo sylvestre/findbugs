@@ -1,15 +1,17 @@
 Source: findbugs
-Section: unknown
+Section: java
 Priority: extra
 Maintainer: ShuxiongYe <yeshuxiong@gmail.com>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://findbugs.sourceforge.net/
 #Vcs-Git: git://git.debian.org/collab-maint/findbugs.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/findbugs.git;a=summary
 
 Package: findbugs
 Architecture: all
 Depends: ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Static java code analyzer to find bugs
+ Findbugs is a program which uses static analysis to look for bugs in Java 
+ code. It can analyze programs compiled for any version of Java, from 1.0 
+ to 1.8. 
