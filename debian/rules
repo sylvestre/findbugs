@@ -9,5 +9,20 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+#JAVA_HOME = /usr/lib/jvm/default-java
+
+DESDIR=$(CURDIR)/debian/findbugs
+BASE_NAME=findbugs
+BASE_NAME_JAR=$(BASE_NAME).jar
+VERSION=2.0.2
+FULL_NAME_JAR=$(BASE_NAME)-$(VERSION).jar
+
 %:
-	dh $@ 
+	dh $@ --with javahelper
+
+override_dh_auto_install:
+	mkdir -p $(DESDIR)/usr/share/java
+	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(DESDIR)/usr/share/java/$(FULL_NAME_JAR)
+	cd $(DESDIR)/usr/share/java && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
+	mkdir -p $(DESDIR)/usr/share/$(BASE_NAME)
+	cd $(DESDIR)/usr/share/$(BASE_NAME) && ln -s ../java/$(FULL_NAME_JAR) $(BASE_NAME_JAR)
