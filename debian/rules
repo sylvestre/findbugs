@@ -12,17 +12,43 @@
 #JAVA_HOME = /usr/lib/jvm/default-java
 
 DESDIR=$(CURDIR)/debian/findbugs
+SHAREDIR=$(DESDIR)/usr/share
+
 BASE_NAME=findbugs
 BASE_NAME_JAR=$(BASE_NAME).jar
 VERSION=2.0.2
 FULL_NAME_JAR=$(BASE_NAME)-$(VERSION).jar
 
+SHAREPACDIR=$(SHAREDIR)/$(BASE_NAME)
+
 %:
-	dh $@ --with javahelper
+	dh $@
+
+override_dh_auto_build:
+	docbook-to-man debian/findbugs.sgml > debian/findbugs.1
+	ant -f build.xml build docs
 
 override_dh_auto_install:
-	mkdir -p $(DESDIR)/usr/share/java
-	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(DESDIR)/usr/share/java/$(FULL_NAME_JAR)
-	cd $(DESDIR)/usr/share/java && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
-	mkdir -p $(DESDIR)/usr/share/$(BASE_NAME)
-	cd $(DESDIR)/usr/share/$(BASE_NAME) && ln -s ../java/$(FULL_NAME_JAR) $(BASE_NAME_JAR)
+	# install findbugs.jar in /usr/share/java as findbugs-$version.jar
+	mkdir -p $(SHAREDIR)/java
+	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(SHAREDIR)/java/$(FULL_NAME_JAR)
+	
+	# link /usr/share/java/findbugs-$version.jar to /usr/share/java/findbugs.jar
+	cd $(SHAREDIR)/java && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
+	
+	# link /usr/share/java/findbugs-$version.jar to /usr/share/findbugs/lib/findbugs.jar
+	mkdir -p $(SHAREPACDIR)/lib
+	cd $(SHAREPACDIR)/lib && ln -s ../../java/$(FULL_NAME_JAR) $(BASE_NAME_JAR)
+	
+	# install bin in /usr/share/findbugs/bin
+	mkdir -p $(SHAREPACDIR)/bin
+	cp -rf $(CURDIR)/bin/* $(SHAREPACDIR)/bin
+	
+	# link /usr/share/findbugs/bin/findbugs to /usr/bin/findbugs
+	mkdir -p $(DESDIR)/usr/bin
+	cd $(DESDIR)/usr/bin && ln -s ../share/findbugs/bin/findbugs findbugs
+	
+	# install docs here
+	mkdir -p $(DESDIR)/usr/share/doc/findbugs/html
+	cp -rf $(CURDIR)/doc/manual/* $(DESDIR)/usr/share/doc/findbugs/html
+

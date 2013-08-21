@@ -1,5 +1,5 @@
-findbugs (2.0.2-1) unstable; urgency=low
+findbugs (2.0.2-1) UNRELEASED; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
  -- ShuxiongYe <yeshuxiong@gmail.com>  Wed, 21 Aug 2013 04:07:28 +0800
