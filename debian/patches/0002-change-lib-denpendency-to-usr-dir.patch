@@ -1,0 +1,146 @@
+Description: change lib denpendency from $CURDIR/lib to /usr/share/java
+--- a/build.properties
++++ b/build.properties
+@@ -10,6 +10,8 @@
+ local.software.home	=/fs/pugh/pugh
+ #local.software.home	=/user/daveho/local
+ 
++sys.jar.dir   =/usr/share/java
++
+ # Set this to the directory containing the DocBook Modular XSL Stylesheets
+ #  from http://docbook.sourceforge.net/projects/xsl/
+ 
+@@ -27,7 +29,7 @@
+ # is installed.
+ 
+ #saxon.home		=${local.software.home}/saxon-6.5.5
+-saxon.home     =/usr/share/java
++saxon.home     =${sys.jar.dir}
+ 
+ # Set this to the directory where FOP (http://xml.apache.org/fop/)
+ # is installed.  (Note: this is disabled for now.)
+--- a/build.xml
++++ b/build.xml
+@@ -60,23 +60,23 @@
+ 
+     <path id="findbugs.classpath">
+         <pathelement location="${jar.dir}/bcel.jar"/>
+-        <pathelement location="${jar.dir}/dom4j-1.6.1.jar"/>
++        <pathelement location="${sys.jar.dir}/dom4j.jar"/>
+         <pathelement location="${jar.dir}/AppleJavaExtensions.jar"/>
+-        <pathelement location="${jar.dir}/junit.jar"/>
+-        <pathelement location="${jar.dir}/asm-3.3.jar"/>
+-        <pathelement location="${jar.dir}/asm-commons-3.3.jar"/>
+-        <pathelement location="${jar.dir}/asm-tree-3.3.jar"/>
+-        <pathelement location="${jar.dir}/jaxen-1.1.1.jar"/>
++        <pathelement location="${sys.jar.dir}/junit4.jar"/>
++        <pathelement location="${sys.jar.dir}/asm3.jar"/>
++        <pathelement location="${sys.jar.dir}/asm3-commons.jar"/>
++        <pathelement location="${sys.jar.dir}/asm3-tree.jar"/>
++        <pathelement location="${sys.jar.dir}/jaxen.jar"/>
+         <pathelement location="${jar.dir}/jsr305.jar"/>
+         <pathelement location="${jar.dir}/jFormatString.jar"/>
+-        <pathelement location="${jar.dir}/commons-lang-2.4.jar"/>
+-        <pathelement location="${jar.dir}/jcip-annotations.jar"/>
++        <pathelement location="${sys.jar.dir}/commons-lang.jar"/>
++        <pathelement location="${sys.jar.dir}/jcip.jar"/>
+     </path>
+ 
+     <path id="tools.classpath">
+         <pathelement location="${classes.dir}"/>
+         <pathelement location="${jar.dir}/findbugs.jar"/>
+-        <pathelement location="${jar.dir}/jdepend-2.9.jar"/>
++        <pathelement location="${sys.jar.dir}/jdepend.jar"/>
+         <path refid="findbugs.classpath"/>
+     </path>
+ 
+@@ -126,16 +126,16 @@
+     <jar destfile="build/mondo.jar"
+         manifest="etc/MANIFEST-findbugs-mondo.MF">
+         <zipfileset src="${jar.dir}/bcel.jar"/>
+-        <zipfileset src="${jar.dir}/dom4j-1.6.1.jar"/>
++        <zipfileset src="${sys.jar.dir}/dom4j.jar"/>
+         <zipfileset src="${jar.dir}/AppleJavaExtensions.jar"/>
+-        <zipfileset src="${jar.dir}/junit.jar"/>
+-        <zipfileset src="${jar.dir}/asm-3.3.jar"/>
+-        <zipfileset src="${jar.dir}/asm-commons-3.3.jar"/>
+-        <zipfileset src="${jar.dir}/asm-tree-3.3.jar"/>
+-        <zipfileset src="${jar.dir}/jaxen-1.1.1.jar"/>
++        <zipfileset src="${sys.jar.dir}/junit4.jar"/>
++        <zipfileset src="${sys.jar.dir}/asm3.jar"/>
++        <zipfileset src="${sys.jar.dir}/asm3-commons.jar"/>
++        <zipfileset src="${sys.jar.dir}/asm3-tree.jar"/>
++        <zipfileset src="${sys.jar.dir}/jaxen.jar"/>
+         <zipfileset src="${jar.dir}/jsr305.jar"/>
+         <zipfileset src="${jar.dir}/jFormatString.jar"/>
+-        <zipfileset src="${jar.dir}/commons-lang-2.4.jar"/>
++        <zipfileset src="${sys.jar.dir}/commons-lang.jar"/>
+         <zipfileset src="${jar.dir}/findbugs.jar"/>
+     </jar>
+     </target>
+@@ -313,7 +313,7 @@
+             <fileset dir="${src.dir}">
+                 <include name="**/annotations/*.java"/>
+             </fileset>
+-            <zipfileset src="${jar.dir}/jcip-annotations.jar" excludes="META-INF/**,**/*.html"/>
++            <zipfileset src="${sys.jar.dir}/jcip.jar" excludes="META-INF/**,**/*.html"/>
+             <zipfileset src="${jar.dir}/jsr305.jar" excludes="META-INF/**,**/*.html"/>
+         </jar>
+     </target>
+@@ -348,18 +348,18 @@
+ 
+             <zipfileset src="${jar.dir}/bcel.jar" excludes="META-INF/**"/>
+ 
+-            <zipfileset src="${jar.dir}/asm-3.3.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/asm-analysis-3.3.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/asm-commons-3.3.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/asm-tree-3.3.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/asm-util-3.3.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/asm-xml-3.3.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3-analysis.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3-commons.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3-tree.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3-util.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/asm3-xml.jar" excludes="META-INF/**"/>
+ 
+-            <zipfileset src="${jar.dir}/dom4j-1.6.1.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/jaxen-1.1.1.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/dom4j.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/jaxen.jar" excludes="META-INF/**"/>
+             <zipfileset src="${jar.dir}/jsr305.jar" excludes="META-INF/**"/>
+             <zipfileset src="${jar.dir}/jFormatString.jar" excludes="META-INF/**"/>
+-            <zipfileset src="${jar.dir}/commons-lang-2.4.jar" excludes="META-INF/**"/>
++            <zipfileset src="${sys.jar.dir}/commons-lang.jar" excludes="META-INF/**"/>
+         </jar>
+     </target>
+ 
+@@ -512,7 +512,7 @@
+               jvmargs="-ea -Xmx1200m"
+               projectName="Byte code Engineering Library (BCEL)"
+               outputFile="${sampleoutput.dir}/bcel-cloud.xml" >
+-      <class location="${jar.dir}/bcel.jar" />
++      <class location="${sys.jar.dir}/bcel.jar" />
+     </findbugs>
+ -->
+ 
+@@ -994,13 +994,13 @@
+         <copy todir="${jnlp.dir}" file="${engine.jar}"/>
+         <copy todir="${jnlp.dir}" file="${jar.dir}/bcel.jar"/>
+         <copy todir="${jnlp.dir}" file="${jar.dir}/jsr305.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/asm-3.3.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/asm-commons-3.3.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/asm-tree-3.3.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/dom4j-1.6.1.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/jaxen-1.1.1.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/asm3.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/asm3-commons.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/asm3-tree.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/dom4j.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/jaxen.jar"/>
+         <copy todir="${jnlp.dir}" file="${jar.dir}/jFormatString.jar"/>
+-        <copy todir="${jnlp.dir}" file="${jar.dir}/commons-lang-2.4.jar"/>
++        <copy todir="${jnlp.dir}" file="${sys.jar.dir}/commons-lang.jar"/>
+         <copy todir="${jnlp.dir}" file="${jar.dir}/AppleJavaExtensions.jar"/>
+         <copy todir="${jnlp.dir}" file="${docsrc.dir}/buggy-sm.png"/>
+         <copy todir="${jnlp.dir}">
