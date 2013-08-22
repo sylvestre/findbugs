@@ -32,25 +32,25 @@ override_dh_auto_install:
 	# install findbugs.jar in /usr/share/findbugs/lib as findbugs-$version.jar
 	mkdir -p $(SHAREPACDIR)/lib
 	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(SHAREPACDIR)/lib/$(FULL_NAME_JAR)
-	
+
 	# link /usr/share/findbugs/lib/findbugs-$version.jar to /usr/share/findbugs/lib/findbugs.jar
-	cd $(SHAREPACDIR)/lib && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
-	
-	# copy $(CURDIR)/lib/ AppleJavaExtendsions.jar bcel.jar jFormatString.jar jsr305.jar to /usr/share/findbugs/lib 
+	cd $(SHAREPACDIR)/lib && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR)
+
+	# copy $(CURDIR)/lib/ AppleJavaExtendsions.jar bcel.jar jFormatString.jar jsr305.jar to /usr/share/findbugs/lib
 	cp $(CURDIR)/lib/AppleJavaExtensions.jar $(SHAREPACDIR)/lib
 	cp $(CURDIR)/lib/bcel.jar $(SHAREPACDIR)/lib
 	cp $(CURDIR)/lib/jFormatString.jar $(SHAREPACDIR)/lib
 	cp $(CURDIR)/lib/jsr305.jar $(SHAREPACDIR)/lib
-	
+
 	# install bin in /usr/share/findbugs/bin
 	mkdir -p $(SHAREPACDIR)/bin
 	cp -rf $(CURDIR)/bin/* $(SHAREPACDIR)/bin
-	
+
 	# link /usr/share/findbugs/bin/findbugs to /usr/bin/findbugs
 	mkdir -p $(DESDIR)/usr/bin
 	#cd $(DESDIR)/usr/bin && ln -s ../share/findbugs/bin/findbugs findbugs
 	cp $(CURDIR)/debian/script/findbugs $(DESDIR)/usr/bin
-	
+
 	# install docs here
 	mkdir -p $(DESDIR)/usr/share/doc/findbugs/html
 	cp -rf $(CURDIR)/doc/manual/* $(DESDIR)/usr/share/doc/findbugs/html
