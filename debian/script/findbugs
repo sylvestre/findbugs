@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cp=""
+
+for i in ant asm3 asm3-analysis asm3-commons asm3-tree asm3-util asm3-xml commons-lang dom4j jaxen jcip jdenpend junit4; do
+    cp=$cp:/usr/share/java/$i.jar
+done
+
+#for i in AppleJavaExtensions bcel jFormatString jsr305; do
+#    cp=$cp:/usr/share/findbugs/lib/$i.jar
+#done
+
+cmd="CLASSPATH=$cp /usr/share/findbugs/bin/findbugs $@"
+#echo $cmd
+eval $cmd

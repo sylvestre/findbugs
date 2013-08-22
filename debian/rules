@@ -29,16 +29,12 @@ override_dh_auto_build:
 	ant -f build.xml build docs
 
 override_dh_auto_install:
-	# install findbugs.jar in /usr/share/java as findbugs-$version.jar
-	mkdir -p $(SHAREDIR)/java
-	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(SHAREDIR)/java/$(FULL_NAME_JAR)
-	
-	# link /usr/share/java/findbugs-$version.jar to /usr/share/java/findbugs.jar
-	cd $(SHAREDIR)/java && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
-	
-	# link /usr/share/java/findbugs-$version.jar to /usr/share/findbugs/lib/findbugs.jar
+	# install findbugs.jar in /usr/share/findbugs/lib as findbugs-$version.jar
 	mkdir -p $(SHAREPACDIR)/lib
-	cd $(SHAREPACDIR)/lib && ln -s ../../java/$(FULL_NAME_JAR) $(BASE_NAME_JAR)
+	cp $(CURDIR)/lib/$(BASE_NAME_JAR) $(SHAREPACDIR)/lib/$(FULL_NAME_JAR)
+	
+	# link /usr/share/findbugs/lib/findbugs-$version.jar to /usr/share/findbugs/lib/findbugs.jar
+	cd $(SHAREPACDIR)/lib && ln -s $(FULL_NAME_JAR) $(BASE_NAME_JAR) 
 	
 	# copy $(CURDIR)/lib/ AppleJavaExtendsions.jar bcel.jar jFormatString.jar jsr305.jar to /usr/share/findbugs/lib 
 	cp $(CURDIR)/lib/AppleJavaExtensions.jar $(SHAREPACDIR)/lib
@@ -52,7 +48,8 @@ override_dh_auto_install:
 	
 	# link /usr/share/findbugs/bin/findbugs to /usr/bin/findbugs
 	mkdir -p $(DESDIR)/usr/bin
-	cd $(DESDIR)/usr/bin && ln -s ../share/findbugs/bin/findbugs findbugs
+	#cd $(DESDIR)/usr/bin && ln -s ../share/findbugs/bin/findbugs findbugs
+	cp $(CURDIR)/debian/script/findbugs $(DESDIR)/usr/bin
 	
 	# install docs here
 	mkdir -p $(DESDIR)/usr/share/doc/findbugs/html
